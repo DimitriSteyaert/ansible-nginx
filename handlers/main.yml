@@ -1,0 +1,17 @@
+---
+- name: Check Nginx config
+  shell: 'nginx -t'
+  register: nginx_configcheck
+  changed_when: nginx_configcheck.rc != 0
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+  when: nginx_configcheck.rc == 0
+
+- name: Reload Nginx
+  service:
+    name: nginx
+    state: reloaded
+  when: nginx_configcheck.rc == 0

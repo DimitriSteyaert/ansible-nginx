@@ -1,0 +1,9 @@
+---
+- name: Make sure all the required config dirs are present
+  file:
+    path: "/etc/nginx/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  with_items: "{{ nginx_config_dirs }}"

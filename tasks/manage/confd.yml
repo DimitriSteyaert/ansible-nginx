@@ -1,0 +1,21 @@
+---
+- name: Define additional configuration blocks
+  template:
+    src: confd.conf.j2
+    dest: "/etc/nginx/conf.d/{{ item.name }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nginx_extra_confd }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Remove additional configuration blocks
+  file:
+    path: "/etc/nginx/conf.d/{{ item }}.conf"
+    state: absent
+  with_items: "{{ nginx_extra_confd_remove }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx

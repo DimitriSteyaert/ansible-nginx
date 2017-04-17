@@ -1,0 +1,52 @@
+---
+nginx_version: latest
+nginx_state: present
+nginx_purge: no
+nginx_manage: true
+nginx_config_dirs:
+  - conf.d
+  - modules-available
+  - modules-enabled
+  - sites-available
+  - sites-enabled
+
+# General Nginx configuration parameters
+nginx_user: www-data
+nginx_worker_connections: 768
+
+# General http settings
+nginx_server_tokens: 'off'
+nginx_ssl_protocols:
+  - TLSv1
+  - TLSv1.1
+  - TLSv1.2
+
+# Manage the modules
+nginx_remove_default_modules: true
+nginx_modules_default:
+  - 50-mod-http-auth-pam
+  - 50-mod-http-geoip
+  - 50-mod-http-image-filter
+  - 50-mod-http-xslt-filter
+  - 50-mod-mail
+  - 50-mod-stream
+nginx_modules_available:
+  - mod-http-auth-pam
+  - mod-http-geoip
+  - mod-http-image-filter
+  - mod-http-xslt-filter
+  - mod-mail
+  - mod-stream
+nginx_modules_enabled: []
+nginx_modules_disabled: []
+
+# Additional configuration blocks
+nginx_extra_confd: []
+nginx_extra_confd_remove: []
+
+# Manage the vhosts
+nginx_remove_default_vhost: true
+nginx_vhosts: []
+nginx_vhosts_enabled: []
+nginx_vhosts_disabled: []
+nginx_vhosts_removed: []

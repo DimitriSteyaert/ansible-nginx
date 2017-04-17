@@ -1,0 +1,27 @@
+---
+- name: Set the Nginx configuration file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Check Nginx config
+    - Restart Nginx
+
+- name: Set the Nginx defaults file
+  template:
+    src: default/nginx.j2
+    dest: /etc/default/nginx
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Set the Nginx logrotate file
+  template:
+    src: logrotate/nginx.j2
+    dest: /etc/logrotate.d/nginx
+    owner: root
+    group: root
+    mode: 0644

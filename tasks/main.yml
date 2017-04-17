@@ -1,0 +1,13 @@
+---
+- include: apt.yml
+- include: install.yml
+- include: config.yml
+- include: service.yml
+- include: manage/dirs.yml
+  when: nginx_manage
+- include: manage/modules.yml
+  when: nginx_manage
+- include: manage/confd.yml
+  when: nginx_manage
+- include: manage/vhosts.yml
+  when: nginx_manage

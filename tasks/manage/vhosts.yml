@@ -1,0 +1,49 @@
+---
+- name: Remove default vhost
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  when: "{{ nginx_remove_default_vhost }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Define the vhosts
+  template:
+    src: vhost.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nginx_vhosts }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Enable vhosts
+  file:
+    src: "/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-enabled/{{ item }}"
+    state: link
+  with_items: "{{ nginx_vhosts_enabled }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Disable vhosts
+  file:
+    path: "/etc/nginx/sites-enabled/{{ item }}"
+    state: absent
+  with_items: "{{ nginx_vhosts_disabled }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Remove vhosts
+  file:
+    path: "/etc/nginx/sites-available/{{ item }}"
+    state: absent
+  with_items: "{{ nginx_vhosts_removed }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx

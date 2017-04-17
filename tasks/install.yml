@@ -1,0 +1,16 @@
+---
+- name: Install latest version of Nginx
+  apt:
+    name: nginx-full
+    state: "{{ nginx_state }}"
+    purge: "{{ nginx_purge }}"
+  when:
+    - nginx_version == "latest"
+
+- name: Install specific version of Nginx
+  apt:
+    name: "nginx-full={{ nginx_version }}"
+    state: "{{ nginx_state }}"
+    purge: "{{ nginx_purge }}"
+  when:
+    - nginx_version != "latest"

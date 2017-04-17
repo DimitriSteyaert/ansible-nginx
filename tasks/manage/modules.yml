@@ -1,0 +1,38 @@
+---
+- name: Remove default modules
+  file:
+    path: "/etc/nginx/modules-enabled/{{ item }}.conf"
+    state: absent
+  with_items: "{{ nginx_modules_default }}"
+  when: "{{ nginx_remove_default_modules }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Ensure the available modules
+  copy:
+    src: "modules-available/{{ item }}.conf"
+    dest: "/etc/nginx/modules-available/{{ item }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ nginx_modules_available }}"
+
+- name: Enable the loaded modules
+  file:
+    src: "/etc/nginx/modules-available/{{ item }}.conf"
+    dest: "/etc/nginx/modules-enabled/{{ item }}.conf"
+    state: link
+  with_items: "{{ nginx_modules_enabled }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
+
+- name: Disable modules
+  file:
+    path: "/etc/nginx/modules-enabled/{{ item }}.conf"
+    state: absent
+  with_items: "{{ nginx_modules_disabled }}"
+  notify:
+    - Check Nginx config
+    - Reload Nginx
