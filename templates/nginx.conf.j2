@@ -33,7 +33,8 @@ http {
   # SSL Settings
   ##
 
-  ssl_protocols {{ nginx_ssl_protocols|join(' ') }}; # Dropping SSLv3, ref: POODLE
+  ssl_protocols {{ nginx_ssl_protocols|join(' ') }};
+  ssl_ciphers "{{ nginx_ssl_ciphers|join(':') }}";
   ssl_prefer_server_ciphers on;
 
   ##

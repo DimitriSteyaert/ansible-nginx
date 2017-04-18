@@ -9,5 +9,5 @@
   when: nginx_manage
 - include: manage/confd.yml
   when: nginx_manage
-- include: manage/vhosts.yml
+- include: manage/sites.yml
   when: nginx_manage

@@ -20,6 +20,13 @@ nginx_ssl_protocols:
   - TLSv1
   - TLSv1.1
   - TLSv1.2
+nginx_ssl_ciphers:
+  - 'HIGH'
+  - '!aNULL'
+  - '!MD5 or HIGH'
+  - '!aNULL'
+  - '!MD5'
+  - '!3DES'
 
 # Manage the modules
 nginx_remove_default_modules: true
@@ -44,9 +51,6 @@ nginx_modules_disabled: []
 nginx_extra_confd: []
 nginx_extra_confd_remove: []
 
-# Manage the vhosts
-nginx_remove_default_vhost: true
-nginx_vhosts: []
-nginx_vhosts_enabled: []
-nginx_vhosts_disabled: []
-nginx_vhosts_removed: []
+# Manage the sites
+nginx_remove_default_site: true
+nginx_sites: []
