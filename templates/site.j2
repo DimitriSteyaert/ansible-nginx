@@ -24,10 +24,13 @@ server {
   {% if item.locations is defined -%}
   {% for location in item.locations -%}
   location {{ location.modifier|default('') }} {{ location.match|default('(.jpg)') }} {
+  {#
   {% for key, value in location.settings.iteritems()|sort %}
   {{ key }} {{ value }};
   {% endfor -%}
-  }
+  #}
+  {{ location.settings -}}
+    }
   {% endfor %}
   {% endif %}
 
