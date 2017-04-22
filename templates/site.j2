@@ -3,25 +3,26 @@
 server {
   listen {{ item.port|default('80') }}{% if item.default_server is defined and item.default_server %} default_server{% endif %};
   {% if item.ssl is defined -%}
-  listen {{item.ssl.port|default('443')}} ssl{% if item.default_server is defined and item.default_server %} default_server{% endif %};
+  listen {{item.ssl.port|default('443')}} ssl{% if item.ssl.http2 is defined and item.ssl.http2 %} http2{% endif %}{% if item.default_server is defined and item.default_server %} default_server{% endif %};
   {% endif %}
 
   server_name {{ item.name }}{% if item.aliases is defined %} {{ item.aliases|join(' ') }}{% endif %};
 
   root /var/www/sites/{{ item.id }}/{{ item.webroot }};
-  index index.html;
-  {% if item.ssl is defined %}
+  index {{ item.index_files|join(' ') }};
 
+  {% if item.ssl is defined -%}
+  # --- ssl -------------------------------------------------------------------
   #ssl_certificate {{ item.ssl.cert_name }}.crt;
   #ssl_certificate_key {{ item.ssl.key_name }}.key;
   {% endif %}
 
+  # --- locations -------------------------------------------------------------
   location / {
     try_files $uri $uri/ =404;
   }
   {% if item.locations is defined -%}
-  {% for location in item.locations %}
-
+  {% for location in item.locations -%}
   location {{ location.modifier|default('') }} {{ location.match|default('(.jpg)') }} {
   {% for key, value in location.settings.iteritems()|sort %}
   {{ key }} {{ value }};
@@ -29,11 +30,23 @@ server {
   }
   {% endfor %}
   {% endif %}
-  {% if item.extra_block is defined %}
 
+  {% if item.rewrites is defined -%}
+  # --- rewrites --------------------------------------------------------------
+  {% for rewrite in item.rewrites -%}
+  rewrite {{ rewrite.match }} {{ rewrite.replace }} {{ rewrite.flags }};
+  {% if rewrite.return is defined -%}
+  return {{ rewrite.return }};
+  {% endif -%}
+  {% endfor %}
+  {% endif %}
+
+  {% if item.extra_block is defined -%}
+  # --- extra conf ------------------------------------------------------------
   {{ item.extra_block }}
-  {%- endif %}
+  {% endif -%}
 
+  # --- logging ---------------------------------------------------------------
   access_log /var/log/nginx/access-{{ item.id }}.log;
   error_log /var/log/nginx/error-{{ item.id }}.log;
 }
