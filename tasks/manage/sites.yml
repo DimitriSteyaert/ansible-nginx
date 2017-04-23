@@ -3,7 +3,7 @@
   file:
     path: "/etc/nginx/sites-enabled/default"
     state: absent
-  when: "{{ nginx_remove_default_site }}"
+  when: nginx_remove_default_site
   notify:
     - Check Nginx config
     - Reload Nginx

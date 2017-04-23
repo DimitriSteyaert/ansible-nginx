@@ -4,7 +4,7 @@
     path: "/etc/nginx/modules-enabled/{{ item }}.conf"
     state: absent
   with_items: "{{ nginx_modules_default }}"
-  when: "{{ nginx_remove_default_modules }}"
+  when: nginx_remove_default_modules
   notify:
     - Check Nginx config
     - Reload Nginx
