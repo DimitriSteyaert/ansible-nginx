@@ -8,6 +8,27 @@
     - Check Nginx config
     - Reload Nginx
 
+- name: Manage the groups for our webroots
+  group:
+    name: "{{ item.user }}"
+    state: "{{ item.state }}"
+  when:
+    - item.create_webroot is defined
+    - item.create_webroot == true
+  with_items: "{{ nginx_sites }}"
+
+- name: Manage the user that will own the webroot
+  user:
+    name: "{{ item.user }}"
+    group: "{{ item.user }}"
+    groups: "{{ item.group }}"
+    home: "/var/www/sites/{{ item.id }}/"
+    state: "{{ item.state }}"
+  when:
+    - item.create_webroot is defined
+    - item.create_webroot == true
+  with_items: "{{ nginx_sites }}"
+
 - name: Create the webroot
   file:
     dest: "/var/www/sites/{{ item.id }}/{{ item.webroot }}"
