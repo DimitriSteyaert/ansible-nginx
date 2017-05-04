@@ -7,3 +7,11 @@
     mode: 0755
     state: directory
   with_items: "{{ nginx_config_dirs }}"
+
+- name: Make sure the main sites folder is present
+  file:
+    path: "{{ nginx_sites_folder }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory

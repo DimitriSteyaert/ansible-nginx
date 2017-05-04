@@ -22,7 +22,7 @@
     name: "{{ item.user }}"
     group: "{{ item.user }}"
     groups: "{{ item.group }}"
-    home: "/var/www/sites/{{ item.id }}/"
+    home: "{{ nginx_sites_folder }}/{{ item.id }}/"
     state: "{{ item.state }}"
   when:
     - item.create_webroot is defined
@@ -31,7 +31,7 @@
 
 - name: Create the webroot
   file:
-    dest: "/var/www/sites/{{ item.id }}/{{ item.webroot }}"
+    dest: "{{ nginx_sites_folder }}/{{ item.id }}/{{ item.webroot }}"
     state: directory
     owner: "{{ item.user|default('root') }}"
     group: "{{ item.group|default('root') }}"

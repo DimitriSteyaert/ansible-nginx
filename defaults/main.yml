@@ -53,4 +53,5 @@ nginx_extra_confd_remove: []
 
 # Manage the sites
 nginx_remove_default_site: true
+nginx_sites_folder: '/var/www/sites'
 nginx_sites: []
