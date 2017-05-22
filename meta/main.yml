@@ -1,0 +1,33 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  author: 'Dimitri Steyaert'
+  description: 'Installs the Nginx webserver with the possibility to let Ansible manage the sites, modules, docroots etc.'
+  company: 'Steyaert Web Services'
+  license: 'MIT'
+  min_ansible_version: '1.9'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - yakkety
+        - zesty
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+  galaxy_tags:
+    - development
+    - nginx
+    - web
+
+ansigenome_info:
+  galaxy_id: 'DimitriSteyaert'
+  travis: False
+  synopsis: |
+    Installs the Nginx webserver with the possibility to let Ansible manage the sites, modules, docroots etc.
+  usage: |
+    By default the latest stable release is installed from the Dotdeb repository, being 1.10 but you can define other versions by defining the ```nginx_version``` parameter with eg ```1.8.1-1~dotdeb+8.1```. By default this role manages the entire Nginx config including sites-enabled, conf.d, mods-enabled en docroots.
